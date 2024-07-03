@@ -11,7 +11,7 @@ const { Client } = require('@elastic/elasticsearch');
 const s3Client = new S3Client({ region: 'us-east-1' });
 
 async function typeAccept(link) {
-    const types = ['xlsx', 'pdf', 'txt'];
+    const types = ['xlsx', 'pdf', 'txt', 'js'];
     const parsedUrl = new URL(link);
     const extension = parsedUrl.pathname.split('.').pop();
     return types.includes(extension);
