@@ -1,0 +1,9 @@
+{
+    "name": "vendor/package",
+    "description": "Rateamento de arquivos .TXT",
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.28",
+        "phpoffice/phpword": "^1.1",
+        "dompdf/dompdf": "^2.0"
+    }
+}
