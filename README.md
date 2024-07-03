@@ -42,10 +42,10 @@ Tipo de Arquivo Aceito: Este gerenciador aceita arquivos nos formatos XLSX, PDF,
 Download em Chunks: Divide o arquivo em partes menores para download mais rápido.
 Log: Registra eventos e erros durante o processo de download utilizando o módulo whiteLog.
 
+#EXEMPLO
+![demo](https://github.com/josnel20/gerenciador-de-downloads/assets/66796219/90b5b073-5a22-4974-b436-e1eef8e0505f)
 
 Autor
-
-![JOSE](https://github.com/josnel20/gerenciador-de-downloads/assets/66796219/fb728539-f99e-4e7c-ae13-fb1579db6bf3)
 José Pison
 Desenvolvedor PL/SR
 linkedin: https://www.linkedin.com/in/jos%C3%A9-pison-02145217a/
