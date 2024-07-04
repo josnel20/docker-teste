@@ -5,35 +5,60 @@ const port = process.env.PORT_API || 3000;
 const tokenEnv = process.env.TOKEN_API;
 const downloadFiles = require('./downloadFiles');
 const whiteLog = require('./whiteLog');
+const comunicaApi = require('./comunicaApi');
 
 app.use(express.json());
 
+let msg = 'Área restrita Grupo Capital Consig';
+
 app.get('/', async (req, res) => {
-    const msg = 'Área restrita Grupo Capital Consig';
-    await whiteLog(`Method: GET - ${msg}`);
+    console.log(msg);
+    await whiteLog(`[API Method: GET] - ${msg}`);
     res.status(404).json({ message: msg, status: res.statusCode });
 });
 
 app.post('/', async (req, res) => {
-    const { urls, nameModule, token } = req.body;
+
+    await whiteLog(`[API Method: POST] - ${msg}`);
+
+    const { urls, nameModulo, urlsDestino, tokenDesti, token } = req.body;
 
     if (token !== tokenEnv) {
-        const error = `Token inválido: ${token}`;
-        await whiteLog(`API: - ${error}`);
-        res.status(500).json({ message: error, status: res.statusCode });
-        return;
+        const aviso = `Token inválido - ${token}`;
+        console.log(aviso);
+        await whiteLog(`[API Method: POST] - Token inválido [${aviso}, 'status' => ${res.statusCode}]`);
+        res.status(500).json({ message: aviso, status: res.statusCode });
     }
     
     try {
-        await whiteLog(`Method: POST - urls: [${urls}], Modulo: ${nameModule}`);    
-       const arquivos = await downloadFiles(urls, nameModule);
-        res.status(200).json({ message: 'Tratativa finalizada com sucesso', arquivos, status: res.statusCode });
+        await whiteLog(`[API Method: POST] - urls recebidas: ['nameModulo' => : ${nameModulo}, 'urls' => ${urls}]`);    
+        const arquivos = await downloadFiles(urls, nameModulo);
+        
+        try {
+            await comunicaApi(urlsDestino, tokenDesti, arquivos);
+        } catch (error) {
+            const erro = `'erro' => ${error}`;
+            console.error(erro);
+            await whiteLog(`[API Method: POST] - erro ao enviar resposta na api de destino [${erro}]`); 
+            res.status(404).json({ erro: error, status: res.statusCode }); 
+            return;
+        }
+
+        const statusCode = `'status' => ${res.statusCode}`;
+        console.log(statusCode);
+        await whiteLog(`[API Method: POST] - tratativa finalizada [${statusCode}]`);  
+        res.status(200).json({ message: 'tratativa finalizada',  status: res.statusCode });
+
     } catch (error) {
-        console.error('Erro:', error);
-        res.status(500).json({ message: error, status: res.statusCode });
+        const erro = `'Error', ${error}`;
+        console.error(erro);
+        await whiteLog(`[API Method: POST] - tratativa finalizada ['status' => ${res.statusCode}, ${erro}]`); 
+        res.status(500).json({erro, status: res.statusCode });
+        return;
     }
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    const mensage = `[API GERENCIADORA DE ARQUIVOS] - o sistema está rodando ['porta' ${port}]`;
+    whiteLog(mensage);
 });

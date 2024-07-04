@@ -15,15 +15,15 @@ async function logNavegacao(texto = "") {
         const logFile = path.join(logDir, `log_${date}.txt`);
         const data = `[${timestamp}] ${texto}`;
 
-        fs.appendFile(logFile, data + '\n', (err) => {
-            if (err) {
-                console.error('Arquivo - log: Erro ao escrever no arquivo:', err);
+        fs.appendFile(logFile, data + '\n', (erro) => {
+            if (erro) {
+                console.error('[ARQUIVO DE LOG] - Erro ao escrever no arquivo:', erro);
             }
         });
 
         console.log(data);
     } catch (error) {
-        console.error('Arquivo - log: Erro ao registrar navegação:', error);
+        console.error('[ARQUIVO DE LOG] - Erro ao registrar navegação', error);
     }
 }
 
